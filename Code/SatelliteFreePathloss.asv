@@ -13,21 +13,20 @@ function LP = SatelliteFreePathloss(fc, h, el_angle)
 
     EarthRadiusInMeters = physconst('EarthRadius'); %Earth Radius in meters;
     EarthRadiusInKm = EarthRadiusInMeters / 1000;
-    % c = physconst('LightSpeed'); %Light speed in m/s
+    c = physconst('LightSpeed'); %Light speed in m/s
     % lambda = (fc) / c;
     
-    % tmp1 = (4*pi*fc*EarthRadiusInKm);
-    % 
-    % tmp2 = sqrt(power((EarthRadiusInKm+h)/EarthRadiusInKm,2) - power(cos(deg2rad(el_angle)),2)) - sin(deg2rad(el_angle));
-    % 
-    % tmp3 = tmp1 * tmp2;
-    % 
-    % tmp4 = tmp3/3e-4;
-    % 
-    % tmp5 = -20 * log10(tmp4);
+    tmp1 = (4*pi*fc*EarthRadiusInMeters);
 
+    tmp2 = sqrt(power((EarthRadiusInKm+h)/EarthRadiusInKm,2) - power(cos(el_angle),2)) - sin(el_angle);
 
-    LP = -20 * log10( (((4*pi*fc*EarthRadiusInKm) * (sqrt(power((EarthRadiusInKm+h)/EarthRadiusInKm, 2) - power(cos(deg2rad(el_angle)), 2)) - sin(deg2rad(el_angle)))))/3e-4);
+    tmp3 = tmp1 * tmp2;
+
+    tmp4 = tmp3/3e-4;
+
+    
+
+    LP = -20 * log10( (((4*pi*fc*EarthRadiusInMeters) * (sqrt(power((EarthRadiusInKm+h)/EarthRadiusInKm, 2) - power(cos(deg2rad(el_angle)), 2)) - sin(deg2rad(el_angle)))))/3e-4);
 
 end
 
