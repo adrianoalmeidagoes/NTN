@@ -62,13 +62,13 @@ Ka_LP = SatelliteFreePathloss(KaBand.Frequency_GHz , h, el_angle) - A;
 %**************************************************************************
 % Calculate carrier (C) to noise (N) ratio
 %**************************************************************************
-S_N0 = ReceiveNoisePower(SBand.Bandwitdh, SBand.T);
+S_N0 = ReceiveNoisePower(SBand.Bandwidth, SBand.T);
 S_CN = (SBand.Pt + SBand.Gt + SBand.Gr + S_LP) - S_N0 - SBand.F;
 
-K_N0 = ReceiveNoisePower(KBand.Bandwitdh, KBand.T);
+K_N0 = ReceiveNoisePower(KBand.Bandwidth, KBand.T);
 K_CN = (KBand.Pt + KBand.Gt + KBand.Gr + K_LP) - K_N0 - KBand.F;  
 
-Ka_N0 = ReceiveNoisePower(KaBand.Bandwitdh, KaBand.T);
+Ka_N0 = ReceiveNoisePower(KaBand.Bandwidth, KaBand.T);
 Ka_CN = (KaBand.Pt + KaBand.Gt + KaBand.Gr + Ka_LP) - Ka_N0 - KaBand.F;  
 
 S_CI = 10 * log10(power(10, SBand.CI_int/10) + power(10, SBand.CI_ext/10) );
@@ -79,9 +79,9 @@ S_CNI = S_CN - S_CI;
 K_CNI = K_CN - K_CI;
 Ka_CNI = Ka_CN - Ka_CI;
 
-S_Throughtput_UL = SBand.Bandwitdh * log2(1 + dBm_to_mW(S_CNI));
-K_Throughtput_UL = KBand.Bandwitdh * log2(1 + dBm_to_mW(K_CNI));
-Ka_Throughtput_UL = KaBand.Bandwitdh * log2(1 + dBm_to_mW(Ka_CNI));
+S_Throughtput_UL = SBand.Bandwidth * log2(1 + dBm_to_mW(S_CNI));
+K_Throughtput_UL = KBand.Bandwidth * log2(1 + dBm_to_mW(K_CNI));
+Ka_Throughtput_UL = KaBand.Bandwidth * log2(1 + dBm_to_mW(Ka_CNI));
 
 
 
@@ -110,13 +110,13 @@ Ka_LP = SatelliteFreePathloss(KaBand.Frequency_GHz , h, el_angle) - A_Ka;
 %**************************************************************************
 % Calculate carrier (C) to noise (N) ratio
 %**************************************************************************
-S_N0 = ReceiveNoisePower(SBand.Bandwitdh, SBand.T);
+S_N0 = ReceiveNoisePower(SBand.Bandwidth, SBand.T);
 S_CN = (SBand.Pt + SBand.Gt + SBand.Gr + S_LP) - (S_N0 - SBand.F);
 
-K_N0 = ReceiveNoisePower(KBand.Bandwitdh, KBand.T);
+K_N0 = ReceiveNoisePower(KBand.Bandwidth, KBand.T);
 K_CN = (KBand.Pt + KBand.Gt + KBand.Gr + K_LP) - K_N0 - KBand.F;  
 
-Ka_N0 = ReceiveNoisePower(KaBand.Bandwitdh, KaBand.T);
+Ka_N0 = ReceiveNoisePower(KaBand.Bandwidth, KaBand.T);
 Ka_CN = (KaBand.Pt + KaBand.Gt + KaBand.Gr + Ka_LP) - Ka_N0 - KaBand.F;  
 
 S_CI = 10 * log10(power(10, SBand.CI_int/10) + power(10, SBand.CI_ext/10) );
@@ -127,9 +127,9 @@ S_CNI = S_CN - S_CI;
 K_CNI = K_CN - K_CI;
 Ka_CNI = Ka_CN - Ka_CI;
 
-S_Throughtput_DL = SBand.Bandwitdh * log2(1 + dBm_to_mW(S_CNI));
-K_Throughtput_DL = KBand.Bandwitdh * log2(1 + dBm_to_mW(K_CNI));
-Ka_Throughtput_DL = KaBand.Bandwitdh * log2(1 + dBm_to_mW(Ka_CNI));
+S_Throughtput_DL = SBand.Bandwidth * log2(1 + dBm_to_mW(S_CNI));
+K_Throughtput_DL = KBand.Bandwidth * log2(1 + dBm_to_mW(K_CNI));
+Ka_Throughtput_DL = KaBand.Bandwidth * log2(1 + dBm_to_mW(Ka_CNI));
 
 
 %**************************************************************************
@@ -168,7 +168,7 @@ Nf_K_DL = 4;
 
 % Lp = 20 * log10((4 * pi * SBand.Frequency_GHz * 1e9) / c ) + 20 * log10(h);
 % Pr = 60 + 54 + 0 - Lp - A_S;
-% n0 = 10 * log10(Boltz * 290 ) + 10 * log10(SBand.Bandwitdh) + 8 + 30;
+% n0 = 10 * log10(Boltz * 290 ) + 10 * log10(SBand.Bandwidth) + 8 + 30;
 % 
 % Snr_S = Pr - n0;
 
@@ -193,9 +193,9 @@ M_K = (log2(10^((K_CNI - 10 * log10(3/2))/10)))/2;
 
 phi = 2/3; % overlap in about 25% to 50% 
 
-C_S = (phi * (Nb_S_DL / Nf_S_DL) * M_S * SBand.Bandwitdh)/1e9;
+C_S = (phi * (Nb_S_DL / Nf_S_DL) * M_S * SBand.Bandwidth)/1e9;
 
-C_K = phi * (Nb_K_DL / Nf_K_DL) * M_K * KBand.Bandwitdh/1e9;
+C_K = phi * (Nb_K_DL / Nf_K_DL) * M_K * KBand.Bandwidth/1e9;
 
 
 %**************************************************************************

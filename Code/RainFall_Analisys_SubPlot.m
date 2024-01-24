@@ -65,13 +65,13 @@ for iTypeLink=1:2
     %**************************************************************************
     % Calculate carrier (C) to noise (N) ratio
     %**************************************************************************
-    S_N0 = ReceiveNoisePower(SBand.Bandwitdh, SBand.T);
+    S_N0 = ReceiveNoisePower(SBand.Bandwidth, SBand.T);
     S_CN = (SBand.Pt + SBand.Gt + SBand.Gr + S_LP(iTypeLink, :)) - S_N0 - SBand.F;
     
-    K_N0 = ReceiveNoisePower(KBand.Bandwitdh, KBand.T);
+    K_N0 = ReceiveNoisePower(KBand.Bandwidth, KBand.T);
     K_CN = (KBand.Pt + KBand.Gt + KBand.Gr + K_LP(iTypeLink, :)) - K_N0 - KBand.F;  
     
-    Ka_N0 = ReceiveNoisePower(KaBand.Bandwitdh, KaBand.T);
+    Ka_N0 = ReceiveNoisePower(KaBand.Bandwidth, KaBand.T);
     Ka_CN = (KaBand.Pt + KaBand.Gt + KaBand.Gr + Ka_LP(iTypeLink, :)) - Ka_N0 - KaBand.F;  
     
     S_CI = 10 * log10(power(10, SBand.CI_int/10) + power(10, SBand.CI_ext/10) );
@@ -82,9 +82,9 @@ for iTypeLink=1:2
     K_CNI = K_CN - K_CI;
     Ka_CNI = Ka_CN - Ka_CI;
     
-    S_Throughtput(iTypeLink, :) = SBand.Bandwitdh * log2(1 + dBm_to_mW(S_CNI));
-    K_Throughtput(iTypeLink, :) = KBand.Bandwitdh * log2(1 + dBm_to_mW(K_CNI));
-    Ka_Throughtput(iTypeLink,:) = KaBand.Bandwitdh * log2(1 + dBm_to_mW(Ka_CNI));
+    S_Throughtput(iTypeLink, :) = SBand.Bandwidth * log2(1 + dBm_to_mW(S_CNI));
+    K_Throughtput(iTypeLink, :) = KBand.Bandwidth * log2(1 + dBm_to_mW(K_CNI));
+    Ka_Throughtput(iTypeLink,:) = KaBand.Bandwidth * log2(1 + dBm_to_mW(Ka_CNI));
 end
 
 %**************************************************************************

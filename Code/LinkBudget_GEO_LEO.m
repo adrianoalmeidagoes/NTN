@@ -44,10 +44,10 @@ Ka_LP = 20*log10(KaBand.Frequency_GHz) + 20*log10(d) + 92.45;
 %**************************************************************************
 % Calculate carrier (C) to noise (N) ratio
 %**************************************************************************
-K_N0 = ReceiveNoisePower(KBand.Bandwitdh, KBand.T);
+K_N0 = ReceiveNoisePower(KBand.Bandwidth, KBand.T);
 K_CN = (KBand.Pt + KBand.Gt + KBand.Gr + K_LP) - K_N0 - KBand.F;  
 
-Ka_N0 = ReceiveNoisePower(KaBand.Bandwitdh, KaBand.T);
+Ka_N0 = ReceiveNoisePower(KaBand.Bandwidth, KaBand.T);
 Ka_CN = (KaBand.Pt + KaBand.Gt + KaBand.Gr + Ka_LP) - Ka_N0 - KaBand.F;  
 
 K_CI = 10 * log10(power(10, KBand.CI_int/10) + power(10, KBand.CI_ext/10) );
@@ -56,8 +56,8 @@ Ka_CI = 10 * log10(power(10, KaBand.CI_int/10) + power(10, KaBand.CI_ext/10) );
 K_CNI = K_CN - K_CI;
 Ka_CNI = Ka_CN - Ka_CI;
 
-K_Throughtput = KBand.Bandwitdh * log2(1 + dBm_to_mW(K_CNI));
-Ka_Throughtput = KaBand.Bandwitdh * log2(1 + dBm_to_mW(Ka_CNI));
+K_Throughtput = KBand.Bandwidth * log2(1 + dBm_to_mW(K_CNI));
+Ka_Throughtput = KaBand.Bandwidth * log2(1 + dBm_to_mW(Ka_CNI));
 
 %**************************************************************************
 % Plot results

@@ -44,7 +44,7 @@ FrequenciesStructure(1).F = 8; % Receiver noise figure
 FrequenciesStructure(1).T = 290; %Receiver antenna temperature in Kelvin
 FrequenciesStructure(1).CI_int = 3; % internal interference
 FrequenciesStructure(1).CI_ext = 8; % external interference
-FrequenciesStructure(1).Bandwitdh = 500e6; % Bandwidth in Hz
+FrequenciesStructure(1).Bandwidth = 500e6; % Bandwidth in Hz
 
 FrequenciesStructure(2).Band = 'L';
 FrequenciesStructure(2).Direction = 'DL';
@@ -56,7 +56,7 @@ FrequenciesStructure(2).F = 3; % Receiver noise figure
 FrequenciesStructure(2).T = 50; %Receiver antenna temperature in Kelvin
 FrequenciesStructure(2).CI_int = 3; % internal interference
 FrequenciesStructure(2).CI_ext = 8; % external interference
-FrequenciesStructure(2).Bandwitdh = 500e6; % Bandwidth in Hz
+FrequenciesStructure(2).Bandwidth = 500e6; % Bandwidth in Hz
 
 FrequenciesStructure(3).Band = 'S';
 FrequenciesStructure(3).Direction = 'UL';
@@ -68,7 +68,7 @@ FrequenciesStructure(3).F = 8; % Receiver noise figure
 FrequenciesStructure(3).T = 290; %Receiver antenna temperature in Kelvin
 FrequenciesStructure(3).CI_int = 3; % internal interference
 FrequenciesStructure(3).CI_ext = 8; % external interference
-FrequenciesStructure(3).Bandwitdh = 500e6; % Bandwidth in Hz
+FrequenciesStructure(3).Bandwidth = 500e6; % Bandwidth in Hz
 
 FrequenciesStructure(4).Band = 'S';
 FrequenciesStructure(4).Direction = 'DL';
@@ -80,7 +80,7 @@ FrequenciesStructure(4).F = 3; % Receiver noise figure
 FrequenciesStructure(4).T = 50; %Receiver antenna temperature in Kelvin
 FrequenciesStructure(4).CI_int = 3; % internal interference
 FrequenciesStructure(4).CI_ext = 8; % external interference
-FrequenciesStructure(4).Bandwitdh = 500e6; % Bandwidth in Hz
+FrequenciesStructure(4).Bandwidth = 500e6; % Bandwidth in Hz
 
 FrequenciesStructure(5).Band = 'K';
 FrequenciesStructure(5).Direction = 'UL';
@@ -92,7 +92,7 @@ FrequenciesStructure(5).F = 8; % Receiver noise figure
 FrequenciesStructure(5).T = 290; %Receiver antenna temperature in Kelvin
 FrequenciesStructure(5).CI_int = 3; % internal interference
 FrequenciesStructure(5).CI_ext = 8; % external interference
-FrequenciesStructure(5).Bandwitdh = 500e6; % Bandwidth in Hz
+FrequenciesStructure(5).Bandwidth = 500e6; % Bandwidth in Hz
 
 FrequenciesStructure(6).Band = 'K';
 FrequenciesStructure(6).Direction = 'DL';
@@ -104,7 +104,7 @@ FrequenciesStructure(6).F = 3; % Receiver noise figure
 FrequenciesStructure(6).T = 50; %Receiver antenna temperature in Kelvin
 FrequenciesStructure(6).CI_int = 3; % internal interference
 FrequenciesStructure(6).CI_ext = 8; % external interference
-FrequenciesStructure(6).Bandwitdh = 500e6; % Bandwidth in Hz
+FrequenciesStructure(6).Bandwidth = 500e6; % Bandwidth in Hz
 
 FrequenciesStructure(7).Band = 'Ka';
 FrequenciesStructure(7).Direction = 'UL';
@@ -116,7 +116,7 @@ FrequenciesStructure(7).F = 8; % Receiver noise figure
 FrequenciesStructure(7).T = 290; %Receiver antenna temperature in Kelvin
 FrequenciesStructure(7).CI_int = 3; % internal interference
 FrequenciesStructure(7).CI_ext = 8; % external interference
-FrequenciesStructure(7).Bandwitdh = 500e6; % Bandwidth in Hz
+FrequenciesStructure(7).Bandwidth = 500e6; % Bandwidth in Hz
 
 FrequenciesStructure(8).Band = 'Ka';
 FrequenciesStructure(8).Direction = 'DL';
@@ -128,7 +128,7 @@ FrequenciesStructure(8).F = 3; % Receiver noise figure
 FrequenciesStructure(8).T = 50; %Receiver antenna temperature in Kelvin
 FrequenciesStructure(8).CI_int = 3; % internal interference
 FrequenciesStructure(8).CI_ext = 8; % external interference
-FrequenciesStructure(8).Bandwitdh = 500e6; % Bandwidth in Hz
+FrequenciesStructure(8).Bandwidth = 500e6; % Bandwidth in Hz
 
 FrequenciesStructure(9).Band = 'Q';
 FrequenciesStructure(9).Direction = 'UL';
@@ -140,7 +140,7 @@ FrequenciesStructure(9).F = 3; % Receiver noise figure
 FrequenciesStructure(9).T = 290; %Receiver antenna temperature in Kelvin
 FrequenciesStructure(9).CI_int = 3; % internal interference
 FrequenciesStructure(9).CI_ext = 8; % external interference
-FrequenciesStructure(9).Bandwitdh = 2e9; % Bandwidth in Hz
+FrequenciesStructure(9).Bandwidth = 2e9; % Bandwidth in Hz
 
 FrequenciesStructure(10).Band = 'Q';
 FrequenciesStructure(10).Direction = 'DL';
@@ -152,7 +152,7 @@ FrequenciesStructure(10).F = 3; % Receiver noise figure
 FrequenciesStructure(10).T = 290; %Receiver antenna temperature in Kelvin
 FrequenciesStructure(10).CI_int = 3; % internal interference
 FrequenciesStructure(10).CI_ext = 8; % external interference
-FrequenciesStructure(10).Bandwitdh = 2e9; % Bandwidth in Hz
+FrequenciesStructure(10).Bandwidth = 2e9; % Bandwidth in Hz
 
 FrequenciesTable = struct2table(FrequenciesStructure);
 

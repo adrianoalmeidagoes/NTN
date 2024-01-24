@@ -37,8 +37,8 @@ SBand = FrequenciesTable(strcmp(FrequenciesTable.Band, 'S') & strcmp(Frequencies
 KBand = FrequenciesTable(strcmp(FrequenciesTable.Band, 'K') & strcmp(FrequenciesTable.Direction, TypeLink), :);
 KaBand = FrequenciesTable(strcmp(FrequenciesTable.Band, 'Ka') & strcmp(FrequenciesTable.Direction, TypeLink), :);
 
-Selected_Bands_UL = { 'S: 2.1GHz - UL', 'K: 19GHz - UL', 'Ka: 28GHz - UL' };
-Selected_Bands_DL = { 'S: 2.1GHz - DL', 'K: 19GHz - DL', 'Ka: 28GHz - DL' };
+Selected_Bands_UL = { 'S: 30MHz - UL', 'K: 2.1GHz - UL', 'Ka: 2.1GHz - UL' };
+Selected_Bands_DL = { 'S: 30MHz - DL', 'K: 2.5GHz - DL', 'Ka: 2.5GHz - DL' };
 
 S_LP = zeros(1,length(el_angle));
 K_LP = zeros(1,length(el_angle));
@@ -60,13 +60,13 @@ end
 %**************************************************************************
 % Calculate carrier (C) to noise (N) ratio
 %**************************************************************************
-S_N0 = ReceiveNoisePower(SBand.Bandwitdh, SBand.T);
+S_N0 = ReceiveNoisePower(SBand.Bandwidth, SBand.T);
 S_CN = (SBand.Pt + SBand.Gt + SBand.Gr + S_LP) - S_N0 - SBand.F;
 
-K_N0 = ReceiveNoisePower(KBand.Bandwitdh, KBand.T);
+K_N0 = ReceiveNoisePower(KBand.Bandwidth, KBand.T);
 K_CN = (KBand.Pt + KBand.Gt + KBand.Gr + K_LP) - K_N0 - KBand.F;  
 
-Ka_N0 = ReceiveNoisePower(KaBand.Bandwitdh, KaBand.T);
+Ka_N0 = ReceiveNoisePower(KaBand.Bandwidth, KaBand.T);
 Ka_CN = (KaBand.Pt + KaBand.Gt + KaBand.Gr + Ka_LP) - Ka_N0 - KaBand.F;  
 
 S_CI = 10 * log10(power(10, SBand.CI_int/10) + power(10, SBand.CI_ext/10) );
@@ -77,9 +77,9 @@ S_CNI = S_CN - S_CI;
 K_CNI = K_CN - K_CI;
 Ka_CNI = Ka_CN - Ka_CI;
 
-S_Throughtput = SBand.Bandwitdh * log2(1 + dBm_to_mW(S_CNI));
-K_Throughtput = KBand.Bandwitdh * log2(1 + dBm_to_mW(K_CNI));
-Ka_Throughtput = KaBand.Bandwitdh * log2(1 + dBm_to_mW(Ka_CNI));
+S_Throughtput = SBand.Bandwidth * log2(1 + dBm_to_mW(S_CNI));
+K_Throughtput = KBand.Bandwidth * log2(1 + dBm_to_mW(K_CNI));
+Ka_Throughtput = KaBand.Bandwidth * log2(1 + dBm_to_mW(Ka_CNI));
 
 %**************************************************************************
 % Plot results
@@ -93,7 +93,6 @@ set(gca, 'FontName', 'Times New Roman'); % Set the font type for the axes
 set(gca, 'FontSize', 12); % Set the font size for the axes
 xlabel('Satellite Elevation Angle [degree]', 'FontName', 'Times New Roman', 'FontSize', 14); % Label for the x-axis
 ylabel('Upperbound Throughput [Gbps]', 'FontName', 'Times New Roman', 'FontSize', 14); % Label for the y-axis
-%title(['Upperbound Throughput over Elevation Angles and Bands for (', TypeLink, ')'], 'FontName', 'Times New Roman', 'FontSize', 14); % Title of the graph
 grid on
 
 hold on
@@ -128,13 +127,13 @@ end
 %**************************************************************************
 % Calculate carrier (C) to noise (N) ratio
 %**************************************************************************
-S_N0 = ReceiveNoisePower(SBand.Bandwitdh, SBand.T);
+S_N0 = ReceiveNoisePower(SBand.Bandwidth, SBand.T);
 S_CN = (SBand.Pt + SBand.Gt + SBand.Gr + S_LP) - S_N0 - SBand.F;
 
-K_N0 = ReceiveNoisePower(KBand.Bandwitdh, KBand.T);
+K_N0 = ReceiveNoisePower(KBand.Bandwidth, KBand.T);
 K_CN = (KBand.Pt + KBand.Gt + KBand.Gr + K_LP) - K_N0 - KBand.F;  
 
-Ka_N0 = ReceiveNoisePower(KaBand.Bandwitdh, KaBand.T);
+Ka_N0 = ReceiveNoisePower(KaBand.Bandwidth, KaBand.T);
 Ka_CN = (KaBand.Pt + KaBand.Gt + KaBand.Gr + Ka_LP) - Ka_N0 - KaBand.F;  
 
 S_CI = 10 * log10(power(10, SBand.CI_int/10) + power(10, SBand.CI_ext/10) );
@@ -145,9 +144,9 @@ S_CNI = S_CN - S_CI;
 K_CNI = K_CN - K_CI;
 Ka_CNI = Ka_CN - Ka_CI;
 
-S_Throughtput = SBand.Bandwitdh * log2(1 + dBm_to_mW(S_CNI));
-K_Throughtput = KBand.Bandwitdh * log2(1 + dBm_to_mW(K_CNI));
-Ka_Throughtput = KaBand.Bandwitdh * log2(1 + dBm_to_mW(Ka_CNI));
+S_Throughtput = SBand.Bandwidth * log2(1 + dBm_to_mW(S_CNI));
+K_Throughtput = KBand.Bandwidth * log2(1 + dBm_to_mW(K_CNI));
+Ka_Throughtput = KaBand.Bandwidth * log2(1 + dBm_to_mW(Ka_CNI));
 
 %**************************************************************************
 % Plot results

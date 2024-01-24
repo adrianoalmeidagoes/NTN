@@ -54,19 +54,19 @@ end
 %**************************************************************************
 % Calculate carrier (C) to noise (N) ratio
 %**************************************************************************
-Q_N0_UL = ReceiveNoisePower(QBandUL.Bandwitdh, QBandUL.T);
+Q_N0_UL = ReceiveNoisePower(QBandUL.Bandwidth, QBandUL.T);
 Q_CN_UL = (QBandUL.Pt + QBandUL.Gt + QBandUL.Gr + Q_LP_UL) - Q_N0_UL - QBandUL.F;
 
-Q_N0_DL = ReceiveNoisePower(QBandDL.Bandwitdh, QBandDL.T);
+Q_N0_DL = ReceiveNoisePower(QBandDL.Bandwidth, QBandDL.T);
 Q_CN_DL = (QBandDL.Pt + QBandDL.Gt + QBandDL.Gr + Q_LP_DL) - Q_N0_DL - QBandDL.F;
 
 Q_CI_UL = 10 * log10(power(10, QBandUL.CI_int/10) + power(10, QBandUL.CI_ext/10) );
 Q_CNI_UL = Q_CN_UL - Q_CI_UL;
-Q_Throughtput_UL = QBandUL.Bandwitdh * log2(1 + dBm_to_mW(Q_CNI_UL));
+Q_Throughtput_UL = QBandUL.Bandwidth * log2(1 + dBm_to_mW(Q_CNI_UL));
 
 Q_CI_DL = 10 * log10(power(10, QBandDL.CI_int/10) + power(10, QBandDL.CI_ext/10) );
 Q_CNI_DL = Q_CN_DL - Q_CI_DL;
-Q_Throughtput_DL = QBandDL.Bandwitdh * log2(1 + dBm_to_mW(Q_CNI_DL));
+Q_Throughtput_DL = QBandDL.Bandwidth * log2(1 + dBm_to_mW(Q_CNI_DL));
 
 %**************************************************************************
 % Plot results
