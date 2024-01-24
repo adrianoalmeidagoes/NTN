@@ -143,9 +143,9 @@ Ka_Throughtput_DL = KaBand.Bandwitdh * log2(1 + dBm_to_mW(Ka_CNI));
 % Nb = (Gt * Re^2 * (1 - cosd(theta))) / (2 * h^2);
 %**************************************************************************
 % perguntar se é para usar em radianos ----- 
-Nb_S_DL = (SBand.Gt * Re^2 * (1 - cos(el_angle))) / (2 * h^2);
+Nb_S_DL = (SBand.Gt * Re^2 * (1 - cosd(el_angle))) / (2 * h^2);
 
-Nb_K_DL = (KBand.Gt * Re^2 * (1 - cos(el_angle))) / (2 * h^2);
+Nb_K_DL = (KBand.Gt * Re^2 * (1 - cosd(el_angle))) / (2 * h^2);
 
 %**************************************************************************
 % Calculate Number of frequencies used
@@ -215,7 +215,7 @@ A = 10530000; % km² area da europa
 A = 10530000 * 0.05;
 
 
-P = 180/(acos(cos(el_angle)/(cos(acos(1-(A/(2*pi*(Re^2))))))));
+P = 180/(acos(cosd(el_angle)/(cosd(acosd(1-(A/(2*pi*(Re^2))))))));
 
 % A / (2 * pi * Re^2 * (1 - cos(acos(cosd(el_angle) / cosd(180 / P))))) <= 1;
 
