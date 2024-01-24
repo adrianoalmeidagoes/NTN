@@ -1,6 +1,6 @@
 function P = Satellite_Passages(AltitudeInKm)
 
-    earthRotation = (23*3600)+(56*60)+4.1; %86164.1 seconds; 
+    earthRotation = (23*3600) + (56*60) + 4.1; %86164.1 seconds; 
     earthRadius = physconst("EarthRadius");
 
     G= 6.67430e-11; % gravitational constant
