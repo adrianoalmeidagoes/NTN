@@ -26,8 +26,12 @@ Boltz = physconst("Boltzmann");
 RainFall = 40; % RainFall in mm/h
 el_angle = 30; % Elevation angle of the satellite in degrees
 tilt_angle = 45; % Tilt angle of the antenna in degrees
-h = 1557; % Satellite altitude in Km
-Re = 6371; % Earth Radius  in km
+h = 1200; % Satellite altitude in Km
+Re = physconst("EarthRadius")/1e3; % Earth Radius  in km
+A = 10530000; % km² area da europa
+Houses_covered = (((449*10^6 * 0.05)/400) / 2.3); % media de numero de 5% de casas na Europa servidas por antenas 5G que combrem no minimo 400 UE
+max_bandwidth = 100; % 100 mbps per user
+
 
 
 %**************************************************************************
@@ -83,7 +87,8 @@ S_Throughtput_UL = SBand.Bandwidth * log2(1 + dBm_to_mW(S_CNI));
 K_Throughtput_UL = KBand.Bandwidth * log2(1 + dBm_to_mW(K_CNI));
 Ka_Throughtput_UL = KaBand.Bandwidth * log2(1 + dBm_to_mW(Ka_CNI));
 
-
+[N_k_UL,n_k_UL] = CalculateSatelites_Circunference_Belt(KBand.Gt,el_angle,h,K_CNI,KBand.Bandwidth,A,Houses_covered,max_bandwidth);
+[N_ka_UL,n_ka_UL] = CalculateSatelites_Circunference_Belt(KaBand.Gt,el_angle,h,Ka_CNI,KaBand.Bandwidth,A,Houses_covered,max_bandwidth);
 
 
 TypeLink = 'DL';
@@ -132,123 +137,140 @@ K_Throughtput_DL = KBand.Bandwidth * log2(1 + dBm_to_mW(K_CNI));
 Ka_Throughtput_DL = KaBand.Bandwidth * log2(1 + dBm_to_mW(Ka_CNI));
 
 
-%**************************************************************************
-% Calculate Number of beans nb
-% Gt    =   % Assign the value for transmitter antenna gain 54 dBi 36.9 dB;
-% Re    =   % Assign the value for the earth radius;
-% theta =   % Assign the value for elevation angle;
-% h     =   % Assign the value for high of the satellite;
+
+[N_k_DL,n_k_DL] = CalculateSatelites_Circunference_Belt(KBand.Gt,el_angle,h,K_CNI,KBand.Bandwidth,A,Houses_covered,max_bandwidth);
+[N_ka_DL,n_ka_DL] = CalculateSatelites_Circunference_Belt(KaBand.Gt,el_angle,h,K_CNI,KaBand.Bandwidth,A,Houses_covered,max_bandwidth);
+
+% %**************************************************************************
+% % Calculate Number of beans nb
+% % Gt    =   % Assign the value for transmitter antenna gain 54 dBi 36.9 dB;
+% % Re    =   % Assign the value for the earth radius;
+% % theta =   % Assign the value for elevation angle;
+% % h     =   % Assign the value for high of the satellite;
+% % 
+% % % Formula for Nb
+% % Nb = (Gt * Re^2 * (1 - cosd(theta))) / (2 * h^2);
+% %**************************************************************************
+% % perguntar se é para usar em radianos ----- 
+% Nb_S_DL = (SBand.Gt * Re^2 * (1 - cosd(el_angle))) / (2 * h^2);
 % 
-% % Formula for Nb
-% Nb = (Gt * Re^2 * (1 - cosd(theta))) / (2 * h^2);
-%**************************************************************************
-% perguntar se é para usar em radianos ----- 
-Nb_S_DL = (SBand.Gt * Re^2 * (1 - cosd(el_angle))) / (2 * h^2);
-
-Nb_K_DL = (KBand.Gt * Re^2 * (1 - cosd(el_angle))) / (2 * h^2);
-
-%**************************************************************************
-% Calculate Number of frequencies used
-% optimal value would be 4
-%**************************************************************************
-Nf_S_DL = 4 ;
-
-Nf_K_DL = 4;
-
-
-
-
-%**************************************************************************
-% Calculate Number of number of bits M transmitted per symbol
-% SNR =   % Assign the value for SNR;
-% M = log10(10^((SNR - 10 * log10(3/2))/10))/2;
-%**************************************************************************
-
-%snr 
-
-% Lp = 20 * log10((4 * pi * SBand.Frequency_GHz * 1e9) / c ) + 20 * log10(h);
-% Pr = 60 + 54 + 0 - Lp - A_S;
-% n0 = 10 * log10(Boltz * 290 ) + 10 * log10(SBand.Bandwidth) + 8 + 30;
+% Nb_K_DL = (KBand.Gt * Re^2 * (1 - cosd(el_angle))) / (2 * h^2);
 % 
-% Snr_S = Pr - n0;
-
-% Perguntar se é o snr ... 
-M_S = (log2(10^((S_CNI - 10 * log10(3/2))/10)))/2;
-
-M_K = (log2(10^((K_CNI - 10 * log10(3/2))/10)))/2;
-
-
-
-
-%**************************************************************************
-% Calculate capacity bits/s
-% phi =  % Assign the value for  frequency non-overlap factor;
-% Nb =   % Assign the value for number of beans;
-% Nf =   % Assign the value for numer of frequencies;
-% M =    % Assign the value for number of bits M transmitted in a symbol;
-% B =    % Assign the value for bandwith used;
-%
-% C = phi * (Nb / Nf) * M * B;
-%**************************************************************************
-
-phi = 2/3; % overlap in about 25% to 50% 
-
-C_S = (phi * (Nb_S_DL / Nf_S_DL) * M_S * SBand.Bandwidth)/1e9;
-
-C_K = phi * (Nb_K_DL / Nf_K_DL) * M_K * KBand.Bandwidth/1e9;
-
-
-%**************************************************************************
-% Calculate the coverage angle of the satellites
-% A =       % Assign the value for the coverage Area;
-% Re =      % Assign the value for the earth radius;
-% theta =   % Assign the value for elevation angle;
-% P =       % Assign the value for number of passages needed to cover a given region;
+% %**************************************************************************
+% % Calculate Number of frequencies used
+% % optimal value would be 4
+% %**************************************************************************
+% Nf_S_DL = 4 ;
 % 
-%  A / (2 * pi * Re^2 * (1 - cos(acos(cosd(theta) / cosd(180 / P))))) <= 1;
+% Nf_K_DL = 4;
 % 
 % 
-%**************************************************************************
-
-A = 10530000; % km² area da europa
-
-A = 10530000 * 0.05;
-
-
-P = 180/(acos(cosd(el_angle)/(cosd(acosd(1-(A/(2*pi*(Re^2))))))));
-
-% A / (2 * pi * Re^2 * (1 - cos(acos(cosd(el_angle) / cosd(180 / P))))) <= 1;
-
-%**************************************************************************
-% Calculate the total number of satellites in the constellation
-% N =   % Assign the number of satellites in the constellation
-% n =   % Assign the number of satellites in each circumference
-% H =   % Assign the value of subscrivers; 
-% C =   % Assign the bitrate Capacity;
-% R =   % Assign the Individual bitrate - 250mbps
-% P =   % Assign the value for number of passages needed to cover a given region;
 % 
-%
-% n = H*R / C;
-%
-% N = n * P;
-%**************************************************************************
-
-R = 0.100; % 100 mbps per house
-% 109 persons per $km^2$ in the EU in 2022
-% 449 * 10^6 pessoas na EU
-% 2.3 persons per household
-H = (449*10^6 * 0.05) / 2.3; % media de numero de casas na Europa
-
-
-
-n_S =  H * R / C_S;
-
-n_K =  H * R / C_K;
-
-
-N_S = n_S * P;
-
-N_K = n_K * P;
-
-
+% 
+% %**************************************************************************
+% % Calculate Number of number of bits M transmitted per symbol
+% % SNR =   % Assign the value for SNR;
+% % M = log10(10^((SNR - 10 * log10(3/2))/10))/2;
+% %**************************************************************************
+% 
+% %snr 
+% 
+% % Lp = 20 * log10((4 * pi * SBand.Frequency_GHz * 1e9) / c ) + 20 * log10(h);
+% % Pr = 60 + 54 + 0 - Lp - A_S;
+% % n0 = 10 * log10(Boltz * 290 ) + 10 * log10(SBand.Bandwidth) + 8 + 30;
+% % 
+% % Snr_S = Pr - n0;
+% 
+% % Perguntar se é o snr ... 
+% M_S = (log2(10^((S_CNI - 10 * log10(3/2))/10)))/2;
+% 
+% M_K = (log2(10^((K_CNI - 10 * log10(3/2))/10)))/2;
+% 
+% 
+% 
+% 
+% %**************************************************************************
+% % Calculate capacity bits/s
+% % phi =  % Assign the value for  frequency non-overlap factor;
+% % Nb =   % Assign the value for number of beans;
+% % Nf =   % Assign the value for numer of frequencies;
+% % M =    % Assign the value for number of bits M transmitted in a symbol;
+% % B =    % Assign the value for bandwith used;
+% %
+% % C = phi * (Nb / Nf) * M * B;
+% %**************************************************************************
+% 
+% phi = 2/3; % overlap in about 25% to 50% 
+% 
+% C_S = (phi * (Nb_S_DL / Nf_S_DL) * M_S * SBand.Bandwidth)/1e6;
+% 
+% C_K = phi * (Nb_K_DL / Nf_K_DL) * M_K * KBand.Bandwidth/1e6;
+% 
+% 
+% %**************************************************************************
+% % Calculate the coverage angle of the satellites
+% % A =       % Assign the value for the coverage Area;
+% % Re =      % Assign the value for the earth radius;
+% % theta =   % Assign the value for elevation angle;
+% % P =       % Assign the value for number of passages needed to cover a given region;
+% % 
+% %  A / (2 * pi * Re^2 * (1 - cos(acos(cosd(theta) / cosd(180 / P))))) <= 1;
+% % 
+% % 
+% %**************************************************************************
+% 
+% A = 10530000; % km² area da europa
+% 
+% % A = 10530000 * 0.05;
+% 
+% 
+% % P = 180/(acos(cosd(el_angle)/(cosd(acosd(1-(A/(2*pi*(Re^2))))))));
+% 
+% % A / (2 * pi * Re^2 * (1 - cos(acos(cosd(el_angle) / cosd(180 / P))))) <= 1;
+% 
+% P = Satellite_Passages(h);
+% 
+% 
+% %**************************************************************************
+% % Calculate the total number of satellites in the constellation
+% % N =   % Assign the number of satellites in the constellation
+% % n =   % Assign the number of satellites in each circumference
+% % H =   % Assign the value of subscrivers; 
+% % C =   % Assign the bitrate Capacity;
+% % R =   % Assign the Individual bitrate - 250mbps
+% % P =   % Assign the value for number of passages needed to cover a given region;
+% % 
+% %
+% % n = H*R / C;
+% %
+% % N = n * P;
+% %**************************************************************************
+% 
+% 
+% % 109 persons per $km^2$ in the EU in 2022
+% % 449 * 10^6 pessoas na EU
+% % 2.3 persons per household
+% H = (((449*10^6 * 0.05)/400) / 2.3); % media de numero de 5% de casas na Europa servidas por antenas 5G que combrem no minimo 400 UE
+% 
+% maxBandwidth = 100; % max of 100 mbps per house
+% 
+% R = Calculate_MeanR(H,maxBandwidth); % return the mean usage of network by user 
+% 
+% 
+% 
+% n_S =  H * R / C_S;
+% 
+% n_K =  H * R / C_K;
+% 
+% 
+% N_S = n_S * P;
+% 
+% N_K = n_K * P;
+% 
+% 
+% 
+% fprintf('Number of satellites with band S per circunference %.2f\n', n_S);
+% fprintf('Number of satellites with band S per belt %.2f\n', N_S);
+% 
+% fprintf('Number of satellites with band K per circunference %.2f\n', n_K);
+% fprintf('Number of satellites with band K per belt %.2f\n', N_K);
