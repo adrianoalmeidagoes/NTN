@@ -13,7 +13,10 @@ Re = physconst("EarthRadius")/1e3; % Earth Radius  in km
 % Nb = (Gt * Re^2 * (1 - cosd(theta))) / (2 * h^2);
 %**************************************************************************
 
-Nb = (Gt * Re^2 * (1 - cosd(el_angle))) / (2 * h^2);
+% alpha0 = asind((Re/(Re+h))*cos(el_angle));
+% theta = 90 - alpha0 - el_angle;
+
+Nb = (Gt * Re^2 * (1 - cosd(el_angle))) / (2 * (h)^2);
 
 
 
@@ -48,10 +51,7 @@ M = (log2(10^((SNR - 10 * log10(3/2))/10)))/2;
 
 phi = 2/3; % overlap in about 25% to 50% 
 
-C = (phi * (Nb / Nf) * M * Bandwith_hz)/1e6;
-
-
-
+C = (phi * (Nb / Nf) * M * Bandwith_hz) / 1e6;
 
 %**************************************************************************
 % Calculate the coverage angle of the satellites
@@ -65,9 +65,7 @@ C = (phi * (Nb / Nf) * M * Bandwith_hz)/1e6;
 % 
 %**************************************************************************
 
-
 P = Satellite_Passages(h);
-
 
 %**************************************************************************
 % Calculate the total number of satellites in the constellation
@@ -84,17 +82,12 @@ P = Satellite_Passages(h);
 % N = n * P;
 %**************************************************************************
 
+%R = Calculate_MeanR(Houses,maxBandwidth_User_mbps); % return the mean usage of network by user 
+R = 1e3;
 
+n =  ceil((Houses * R) / C);
 
-R = Calculate_MeanR(Houses,maxBandwidth_User_mbps); % return the mean usage of network by user 
-
-
-
-n =  Houses * R / C;
-
-
-
-N = n * P;
+N = ceil(n * P);
 
 fprintf('Number of satellites with band S per circunference %.2f\n', n);
 fprintf('Number of satellites with band S per belt %.2f\n', N);

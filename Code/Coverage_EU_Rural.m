@@ -23,16 +23,14 @@ load('FrequenciesTable.mat');
 
 c = physconst("LightSpeed");
 Boltz = physconst("Boltzmann");
-RainFall = 40; % RainFall in mm/h
-el_angle = 30; % Elevation angle of the satellite in degrees
+RainFall = 30; % RainFall in mm/h
+el_angle = 36.5; % Elevation angle of the satellite in degrees
 tilt_angle = 45; % Tilt angle of the antenna in degrees
 h = 1200; % Satellite altitude in Km
 Re = physconst("EarthRadius")/1e3; % Earth Radius  in km
 A = 10530000; % km² area da europa
 Houses_covered = (((449*10^6 * 0.05)/400) / 2.3); % media de numero de 5% de casas na Europa servidas por antenas 5G que combrem no minimo 400 UE
 max_bandwidth = 100; % 100 mbps per user
-
-
 
 %**************************************************************************
 % NTN parameters Uplink/Downlink
@@ -50,9 +48,6 @@ Selected_Bands_UL = { 'S: 2.1GHz - UL', 'K: 19GHz - UL', 'Ka: 28GHz - UL' };
 Selected_Bands_DL = { 'S: 2.1GHz - DL', 'K: 19GHz - DL', 'Ka: 28GHz - DL' };
 
 
-
-
-
 A = Calculate_A_Factor(SBand.Frequency_GHz, RainFall, h0, el_angle, tilt_angle);
 S_LP = SatelliteFreePathloss(SBand.Frequency_GHz , h, el_angle) - A;
 
@@ -62,18 +57,17 @@ K_LP = SatelliteFreePathloss(KBand.Frequency_GHz , h, el_angle) - A;
 A = Calculate_A_Factor(KaBand.Frequency_GHz, RainFall, h0, el_angle, tilt_angle);
 Ka_LP = SatelliteFreePathloss(KaBand.Frequency_GHz , h, el_angle) - A; 
 
-
 %**************************************************************************
 % Calculate carrier (C) to noise (N) ratio
 %**************************************************************************
-S_N0 = ReceiveNoisePower(SBand.Bandwidth, SBand.T);
-S_CN = (SBand.Pt + SBand.Gt + SBand.Gr + S_LP) - S_N0 - SBand.F;
+S_N0 = ReceiveNoisePower(SBand.Bandwidth, SBand.T, SBand.F);
+S_CN = (SBand.Pt + SBand.Gt + SBand.Gr + S_LP) - S_N0;
 
-K_N0 = ReceiveNoisePower(KBand.Bandwidth, KBand.T);
-K_CN = (KBand.Pt + KBand.Gt + KBand.Gr + K_LP) - K_N0 - KBand.F;  
+K_N0 = ReceiveNoisePower(KBand.Bandwidth, KBand.T, KBand.F);
+K_CN = (KBand.Pt + KBand.Gt + KBand.Gr + K_LP) - K_N0;  
 
-Ka_N0 = ReceiveNoisePower(KaBand.Bandwidth, KaBand.T);
-Ka_CN = (KaBand.Pt + KaBand.Gt + KaBand.Gr + Ka_LP) - Ka_N0 - KaBand.F;  
+Ka_N0 = ReceiveNoisePower(KaBand.Bandwidth, KaBand.T, KaBand.F);
+Ka_CN = (KaBand.Pt + KaBand.Gt + KaBand.Gr + Ka_LP) - Ka_N0;  
 
 S_CI = 10 * log10(power(10, SBand.CI_int/10) + power(10, SBand.CI_ext/10) );
 K_CI = 10 * log10(power(10, KBand.CI_int/10) + power(10, KBand.CI_ext/10) );
@@ -99,8 +93,6 @@ KBand = FrequenciesTable(strcmp(FrequenciesTable.Band, 'K') & strcmp(Frequencies
 KaBand = FrequenciesTable(strcmp(FrequenciesTable.Band, 'Ka') & strcmp(FrequenciesTable.Direction, TypeLink), :);
 
 
-
-
 A_S = Calculate_A_Factor(SBand.Frequency_GHz, RainFall, h0, el_angle, tilt_angle);
 S_LP = SatelliteFreePathloss(SBand.Frequency_GHz , h, el_angle) - A_S;
 
@@ -115,14 +107,14 @@ Ka_LP = SatelliteFreePathloss(KaBand.Frequency_GHz , h, el_angle) - A_Ka;
 %**************************************************************************
 % Calculate carrier (C) to noise (N) ratio
 %**************************************************************************
-S_N0 = ReceiveNoisePower(SBand.Bandwidth, SBand.T);
-S_CN = (SBand.Pt + SBand.Gt + SBand.Gr + S_LP) - (S_N0 - SBand.F);
+S_N0 = ReceiveNoisePower(SBand.Bandwidth, SBand.T, SBand.F);
+S_CN = (SBand.Pt + SBand.Gt + SBand.Gr + S_LP) - S_N0;
 
-K_N0 = ReceiveNoisePower(KBand.Bandwidth, KBand.T);
-K_CN = (KBand.Pt + KBand.Gt + KBand.Gr + K_LP) - K_N0 - KBand.F;  
+K_N0 = ReceiveNoisePower(KBand.Bandwidth, KBand.T, KBand.F);
+K_CN = (KBand.Pt + KBand.Gt + KBand.Gr + K_LP) - K_N0;  
 
-Ka_N0 = ReceiveNoisePower(KaBand.Bandwidth, KaBand.T);
-Ka_CN = (KaBand.Pt + KaBand.Gt + KaBand.Gr + Ka_LP) - Ka_N0 - KaBand.F;  
+Ka_N0 = ReceiveNoisePower(KaBand.Bandwidth, KaBand.T, KaBand.F);
+Ka_CN = (KaBand.Pt + KaBand.Gt + KaBand.Gr + Ka_LP) - Ka_N0;   
 
 S_CI = 10 * log10(power(10, SBand.CI_int/10) + power(10, SBand.CI_ext/10) );
 K_CI = 10 * log10(power(10, KBand.CI_int/10) + power(10, KBand.CI_ext/10) );
@@ -135,8 +127,6 @@ Ka_CNI = Ka_CN - Ka_CI;
 S_Throughtput_DL = SBand.Bandwidth * log2(1 + dBm_to_mW(S_CNI));
 K_Throughtput_DL = KBand.Bandwidth * log2(1 + dBm_to_mW(K_CNI));
 Ka_Throughtput_DL = KaBand.Bandwidth * log2(1 + dBm_to_mW(Ka_CNI));
-
-
 
 [N_k_DL,n_k_DL] = CalculateSatelites_Circunference_Belt(KBand.Gt,el_angle,h,K_CNI,KBand.Bandwidth,A,Houses_covered,max_bandwidth);
 [N_ka_DL,n_ka_DL] = CalculateSatelites_Circunference_Belt(KaBand.Gt,el_angle,h,K_CNI,KaBand.Bandwidth,A,Houses_covered,max_bandwidth);

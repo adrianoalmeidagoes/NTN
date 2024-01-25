@@ -9,11 +9,11 @@
 %       N0: Noise Power in dBm
 %**************************************************************************
 
-function N0 = ReceiveNoisePower(BandwidthInHz, TemperatureInKelvin)
+function N0 = ReceiveNoisePower(BandwidthInHz, TemperatureInKelvin, FigureNoiseIndB)
 
     k = physconst('Boltzmann');
 
-    N0 = 10*log10(k*TemperatureInKelvin*BandwidthInHz);
+    N0 = 10*log10(k*TemperatureInKelvin) + 10*log10(BandwidthInHz) + FigureNoiseIndB;
 
 end
 

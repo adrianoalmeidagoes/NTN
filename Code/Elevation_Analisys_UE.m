@@ -60,14 +60,14 @@ end
 %**************************************************************************
 % Calculate carrier (C) to noise (N) ratio
 %**************************************************************************
-S_N0 = ReceiveNoisePower(SBand.Bandwidth, SBand.T);
-S_CN = (SBand.Pt + SBand.Gt + SBand.Gr + S_LP) - S_N0 - SBand.F;
+S_N0 = ReceiveNoisePower(SBand.Bandwidth, SBand.T, SBand.F);
+S_CN = (SBand.Pt + SBand.Gt + SBand.Gr + S_LP) - S_N0;
 
-K_N0 = ReceiveNoisePower(KBand.Bandwidth, KBand.T);
-K_CN = (KBand.Pt + KBand.Gt + KBand.Gr + K_LP) - K_N0 - KBand.F;  
+K_N0 = ReceiveNoisePower(KBand.Bandwidth, KBand.T, KBand.F);
+K_CN = (KBand.Pt + KBand.Gt + KBand.Gr + K_LP) - K_N0;  
 
-Ka_N0 = ReceiveNoisePower(KaBand.Bandwidth, KaBand.T);
-Ka_CN = (KaBand.Pt + KaBand.Gt + KaBand.Gr + Ka_LP) - Ka_N0 - KaBand.F;  
+Ka_N0 = ReceiveNoisePower(KaBand.Bandwidth, KaBand.T, KaBand.F);
+Ka_CN = (KaBand.Pt + KaBand.Gt + KaBand.Gr + Ka_LP) - Ka_N0;  
 
 S_CI = 10 * log10(power(10, SBand.CI_int/10) + power(10, SBand.CI_ext/10) );
 K_CI = 10 * log10(power(10, KBand.CI_int/10) + power(10, KBand.CI_ext/10) );
@@ -127,14 +127,14 @@ end
 %**************************************************************************
 % Calculate carrier (C) to noise (N) ratio
 %**************************************************************************
-S_N0 = ReceiveNoisePower(SBand.Bandwidth, SBand.T);
-S_CN = (SBand.Pt + SBand.Gt + SBand.Gr + S_LP) - S_N0 - SBand.F;
+S_N0 = ReceiveNoisePower(SBand.Bandwidth, SBand.T, SBand.F);
+S_CN = (SBand.Pt + SBand.Gt + SBand.Gr + S_LP) - S_N0;
 
-K_N0 = ReceiveNoisePower(KBand.Bandwidth, KBand.T);
-K_CN = (KBand.Pt + KBand.Gt + KBand.Gr + K_LP) - K_N0 - KBand.F;  
+K_N0 = ReceiveNoisePower(KBand.Bandwidth, KBand.T, KBand.F);
+K_CN = (KBand.Pt + KBand.Gt + KBand.Gr + K_LP) - K_N0;  
 
-Ka_N0 = ReceiveNoisePower(KaBand.Bandwidth, KaBand.T);
-Ka_CN = (KaBand.Pt + KaBand.Gt + KaBand.Gr + Ka_LP) - Ka_N0 - KaBand.F;  
+Ka_N0 = ReceiveNoisePower(KaBand.Bandwidth, KaBand.T, KaBand.F);
+Ka_CN = (KaBand.Pt + KaBand.Gt + KaBand.Gr + Ka_LP) - Ka_N0;  
 
 S_CI = 10 * log10(power(10, SBand.CI_int/10) + power(10, SBand.CI_ext/10) );
 K_CI = 10 * log10(power(10, KBand.CI_int/10) + power(10, KBand.CI_ext/10) );
