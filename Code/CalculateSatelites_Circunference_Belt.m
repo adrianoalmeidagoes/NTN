@@ -1,4 +1,4 @@
-function [N,n] = CalculateSatelites_Circunference_Belt(Gt,el_angle,h,SNR,Bandwith_hz,Area, Houses,maxBandwidth_User_mbps)
+function [N,n] = CalculateSatelites_Circunference_Belt(Gt,el_angle,h,SNR,Bandwith_hz,Area, Houses,maxBandwidth_User_mbps,TYPE,R)
 
 Re = physconst("EarthRadius")/1e3; % Earth Radius  in km
 
@@ -82,15 +82,26 @@ P = Satellite_Passages(h);
 % N = n * P;
 %**************************************************************************
 
-%R = Calculate_MeanR(Houses,maxBandwidth_User_mbps); % return the mean usage of network by user 
-R = 1e3;
+% R = Calculate_MeanR(Houses,maxBandwidth_User_mbps); % return the mean usage of network by user 
+% R = 3855;
+
 
 n =  ceil((Houses * R) / C);
 
 N = ceil(n * P);
 
-fprintf('Number of satellites with band S per circunference %.2f\n', n);
-fprintf('Number of satellites with band S per belt %.2f\n', N);
+fprintf('Type %s \n', TYPE);
+fprintf('heigth: %.2f\n', h);
+fprintf('Bandwith: %.2f\n', Bandwith_hz/1e6);
+fprintf('R: %.2f\n', R);
+fprintf('M: %.2f\n', M);
+fprintf('nb: %.2f\n', Nb);
+fprintf('C: %.2f\n', C);
+fprintf('P: %.2f\n', P);
+fprintf('Antennas Covered: %.2f\n', Houses);
+fprintf('n: %.2f\n', n);
+fprintf('N: %.2f\n', N);
+
 
 
 end
