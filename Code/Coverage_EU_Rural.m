@@ -98,7 +98,6 @@ Ka_Throughtput_UL = KaBand.Bandwidth * log2(1 + dBm_to_mW(Ka_CNI));
 % [N_k_UL,n_k_UL] = CalculateSatelites_Circunference_Belt(KBand.Gt,el_angle,h,K_CNI,KBand.Bandwidth,A,Houses_covered,max_bandwidth,"UL_K",R);
 [N_ka_UL,n_ka_UL] = CalculateSatelites_Circunference_Belt(KaBand.Gt,el_angle,h,Ka_CNI,KaBand.Bandwidth,A,Houses_covered,max_bandwidth,"UL_Ka",R);
 
-
 TypeLink = 'DL';
 
 % Load Band variables
