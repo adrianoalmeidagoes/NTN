@@ -1,4 +1,4 @@
-function [N,n] = CalculateSatelites_Circunference_Belt(Gt,el_angle,h,SNR,Bandwith_hz,Area, Houses,maxBandwidth_User_mbps,TYPE,R)
+function [N,n] = CalculateSatelites_Circunference_Belt(Gt,el_angle,h,SNR,Bandwith_hz,throughput ,Area, Houses,maxBandwidth_User_mbps,TYPE,R)
 
 Re = physconst("EarthRadius")/1e3; % Earth Radius  in km
 
@@ -16,8 +16,11 @@ Re = physconst("EarthRadius")/1e3; % Earth Radius  in km
 % alpha0 = asind((Re/(Re+h))*cos(el_angle));
 % theta = 90 - alpha0 - el_angle;
 
-Nb = (Gt * Re^2 * (1 - cosd(el_angle))) / (2 * (h)^2);
+% Nb = (Gt * Re^2 * (1 - cosd(el_angle))) / (2 * (h)^2);
 
+% In Rec. ITU-R S.1782-1 says that new model have 200 beans per HTS
+% deployment
+Nb = 200;
 
 
 %**************************************************************************
@@ -49,9 +52,13 @@ M = (log2(10^((SNR - 10 * log10(3/2))/10)))/2;
 % C = phi * (Nb / Nf) * M * B;
 %**************************************************************************
 
-phi = 2/3; % overlap in about 25% to 50% 
+% phi = 2/3; % overlap in about 25% to 50% 
 
-C = (phi * (Nb / Nf) * M * Bandwith_hz) / 1e6;
+% C = (phi * (Nb / Nf) * M * Bandwith_hz) / 1e6;
+
+
+
+C = ((Nb / Nf) * throughput ) / 1e6;
 
 %**************************************************************************
 % Calculate the coverage angle of the satellites
@@ -91,14 +98,14 @@ n =  ceil((Houses * R) / C);
 N = ceil(n * P);
 
 fprintf('Type %s \n', TYPE);
-fprintf('heigth: %.2f\n', h);
+% fprintf('heigth: %.2f\n', h);
 fprintf('Bandwith: %.2f\n', Bandwith_hz/1e6);
-fprintf('R: %.2f\n', R);
-fprintf('M: %.2f\n', M);
-fprintf('nb: %.2f\n', Nb);
+% fprintf('R: %.2f\n', R);
+% fprintf('M: %.2f\n', M);
+% fprintf('nb: %.2f\n', Nb);
 fprintf('C: %.2f\n', C);
-fprintf('P: %.2f\n', P);
-fprintf('Antennas Covered: %.2f\n', Houses);
+% fprintf('P: %.2f\n', P);
+% fprintf('Antennas Covered: %.2f\n', Houses);
 fprintf('n: %.2f\n', n);
 fprintf('N: %.2f\n', N);
 

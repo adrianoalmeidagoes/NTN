@@ -37,8 +37,14 @@ SBand = FrequenciesTable(strcmp(FrequenciesTable.Band, 'S') & strcmp(Frequencies
 KBand = FrequenciesTable(strcmp(FrequenciesTable.Band, 'K') & strcmp(FrequenciesTable.Direction, TypeLink), :);
 KaBand = FrequenciesTable(strcmp(FrequenciesTable.Band, 'Ka') & strcmp(FrequenciesTable.Direction, TypeLink), :);
 
-Selected_Bands_UL = { 'S: 30MHz - UL', 'K: 2.1GHz - UL', 'Ka: 2.1GHz - UL' };
-Selected_Bands_DL = { 'S: 30MHz - DL', 'K: 2.5GHz - DL', 'Ka: 2.5GHz - DL' };
+% Study for all bands in UL/DL
+% Selected_Bands_UL = { 'S: 30MHz - UL', 'K: 2.1GHz - UL', 'Ka: 2.1GHz - UL' };
+% Selected_Bands_DL = { 'S: 30MHz - DL', 'K: 2.5GHz - DL', 'Ka: 2.5GHz - DL' };
+
+
+% Study for bands in the scenarios (a) and (b) in Fig4 of paper 
+Selected_Bands_UL = { 'S: 30MHz - UL','Ka: 2.1GHz - UL' };
+Selected_Bands_DL = { 'S: 30MHz - DL', 'K: 2.5GHz - DL' };
 
 S_LP = zeros(1,length(el_angle));
 K_LP = zeros(1,length(el_angle));
@@ -69,9 +75,9 @@ K_CN = (KBand.Pt + KBand.Gt + KBand.Gr + K_LP) - K_N0;
 Ka_N0 = ReceiveNoisePower(KaBand.Bandwidth, KaBand.T, KaBand.F);
 Ka_CN = (KaBand.Pt + KaBand.Gt + KaBand.Gr + Ka_LP) - Ka_N0;  
 
-S_CI = 10 * log10(power(10, SBand.CI_int/10) + power(10, SBand.CI_ext/10) );
-K_CI = 10 * log10(power(10, KBand.CI_int/10) + power(10, KBand.CI_ext/10) );
-Ka_CI = 10 * log10(power(10, KaBand.CI_int/10) + power(10, KaBand.CI_ext/10) );
+S_CI = 10 * log10(power(10, -SBand.CI_int/10) + power(10, -SBand.CI_ext/10) );
+K_CI = 10 * log10(power(10, -KBand.CI_int/10) + power(10, -KBand.CI_ext/10) );
+Ka_CI = 10 * log10(power(10, -KaBand.CI_int/10) + power(10, -KaBand.CI_ext/10) );
 
 S_CNI = S_CN - S_CI;
 K_CNI = K_CN - K_CI;
@@ -84,9 +90,20 @@ Ka_Throughtput = KaBand.Bandwidth * log2(1 + dBm_to_mW(Ka_CNI));
 %**************************************************************************
 % Plot results
 %**************************************************************************
+% % Study for all bands in UL/DL
+% figure();
+% plot(el_angle, S_Throughtput/1e9, '-dk', el_angle, K_Throughtput/1e9, '--xk', el_angle, Ka_Throughtput/1e9, '-.sk');
+% legend(Selected_Bands_UL, 'Location', 'southeast', 'FontName', 'Times New Roman', 'FontSize', 12); % Legend with font and size
+% set(gca, 'GridLineStyle', '--'); % Set the grid line style to dashed
+% set(gca, 'FontName', 'Times New Roman'); % Set the font type for the axes
+% set(gca, 'FontSize', 12); % Set the font size for the axes
+% xlabel('Satellite Elevation Angle [degree]', 'FontName', 'Times New Roman', 'FontSize', 14); % Label for the x-axis
+% ylabel('Upperbound Throughput [Gbps]', 'FontName', 'Times New Roman', 'FontSize', 14); % Label for the y-axis
+% grid on
 
+% Study for bands in the scenarios (a) and (b) in Fig4 of paper 
 figure();
-plot(el_angle, S_Throughtput/1e9, '-dk', el_angle, K_Throughtput/1e9, '--xk', el_angle, Ka_Throughtput/1e9, '-.sk');
+plot(el_angle, S_Throughtput/1e9, '-dk', el_angle, Ka_Throughtput/1e9, '-.sk');
 legend(Selected_Bands_UL, 'Location', 'southeast', 'FontName', 'Times New Roman', 'FontSize', 12); % Legend with font and size
 set(gca, 'GridLineStyle', '--'); % Set the grid line style to dashed
 set(gca, 'FontName', 'Times New Roman'); % Set the font type for the axes
@@ -136,9 +153,9 @@ K_CN = (KBand.Pt + KBand.Gt + KBand.Gr + K_LP) - K_N0;
 Ka_N0 = ReceiveNoisePower(KaBand.Bandwidth, KaBand.T, KaBand.F);
 Ka_CN = (KaBand.Pt + KaBand.Gt + KaBand.Gr + Ka_LP) - Ka_N0;  
 
-S_CI = 10 * log10(power(10, SBand.CI_int/10) + power(10, SBand.CI_ext/10) );
-K_CI = 10 * log10(power(10, KBand.CI_int/10) + power(10, KBand.CI_ext/10) );
-Ka_CI = 10 * log10(power(10, KaBand.CI_int/10) + power(10, KaBand.CI_ext/10) );
+S_CI = 10 * log10(power(10, -SBand.CI_int/10) + power(10, -SBand.CI_ext/10) );
+K_CI = 10 * log10(power(10, -KBand.CI_int/10) + power(10, -KBand.CI_ext/10) );
+Ka_CI = 10 * log10(power(10, -KaBand.CI_int/10) + power(10, -KaBand.CI_ext/10) );
 
 S_CNI = S_CN - S_CI;
 K_CNI = K_CN - K_CI;
@@ -151,8 +168,14 @@ Ka_Throughtput = KaBand.Bandwidth * log2(1 + dBm_to_mW(Ka_CNI));
 %**************************************************************************
 % Plot results
 %**************************************************************************
-plot(el_angle, S_Throughtput/1e9, '-dr', el_angle, K_Throughtput/1e9, '--xr', el_angle, Ka_Throughtput/1e9, '-.sr');
+% % Study for all bands in UL/DL
+% plot(el_angle, S_Throughtput/1e9, '-dr', el_angle, K_Throughtput/1e9, '--xr', el_angle, Ka_Throughtput/1e9, '-.sr');
+% legend([Selected_Bands_UL, Selected_Bands_DL], 'Location', 'northwest', 'FontName', 'Times New Roman', 'FontSize', 12); % Legend with font and size
+
+% Study for bands in the scenarios (a) and (b) in Fig4 of paper 
+plot(el_angle, S_Throughtput/1e9, '-dr', el_angle, K_Throughtput/1e9, '--xr');
 legend([Selected_Bands_UL, Selected_Bands_DL], 'Location', 'northwest', 'FontName', 'Times New Roman', 'FontSize', 12); % Legend with font and size
+
 
 
 

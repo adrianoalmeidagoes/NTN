@@ -23,7 +23,7 @@ load('FrequenciesTable.mat');
 
 c = physconst("LightSpeed");
 Boltz = physconst("Boltzmann");
-RainFall = 30; % RainFall in mm/h
+RainFall = 40; % RainFall in mm/h
 el_angle = 36.5; % Elevation angle of the satellite in degrees
 tilt_angle = 45; % Tilt angle of the antenna in degrees
 h = 1200; % Satellite altitude in Km
@@ -83,9 +83,9 @@ K_CN = (KBand.Pt + KBand.Gt + KBand.Gr + K_LP) - K_N0;
 Ka_N0 = ReceiveNoisePower(KaBand.Bandwidth, KaBand.T, KaBand.F);
 Ka_CN = (KaBand.Pt + KaBand.Gt + KaBand.Gr + Ka_LP) - Ka_N0;  
 
-S_CI = 10 * log10(power(10, SBand.CI_int/10) + power(10, SBand.CI_ext/10) );
-K_CI = 10 * log10(power(10, KBand.CI_int/10) + power(10, KBand.CI_ext/10) );
-Ka_CI = 10 * log10(power(10, KaBand.CI_int/10) + power(10, KaBand.CI_ext/10) );
+S_CI = 10 * log10(power(10, -SBand.CI_int/10) + power(10, -SBand.CI_ext/10) );
+K_CI = 10 * log10(power(10, -KBand.CI_int/10) + power(10, -KBand.CI_ext/10) );
+Ka_CI = 10 * log10(power(10, -KaBand.CI_int/10) + power(10, -KaBand.CI_ext/10) );
 
 S_CNI = S_CN - S_CI;
 K_CNI = K_CN - K_CI;
@@ -96,7 +96,7 @@ K_Throughtput_UL = KBand.Bandwidth * log2(1 + dBm_to_mW(K_CNI));
 Ka_Throughtput_UL = KaBand.Bandwidth * log2(1 + dBm_to_mW(Ka_CNI));
 
 % [N_k_UL,n_k_UL] = CalculateSatelites_Circunference_Belt(KBand.Gt,el_angle,h,K_CNI,KBand.Bandwidth,A,Houses_covered,max_bandwidth,"UL_K",R);
-[N_ka_UL,n_ka_UL] = CalculateSatelites_Circunference_Belt(KaBand.Gt,el_angle,h,Ka_CNI,KaBand.Bandwidth,A,Houses_covered,max_bandwidth,"UL_Ka",R);
+[N_ka_UL,n_ka_UL] = CalculateSatelites_Circunference_Belt(KaBand.Gt,el_angle,h,Ka_CNI,KaBand.Bandwidth,Ka_Throughtput_UL,A,Houses_covered,max_bandwidth,"UL_Ka",R);
 
 TypeLink = 'DL';
 
@@ -129,9 +129,9 @@ K_CN = (KBand.Pt + KBand.Gt + KBand.Gr + K_LP) - K_N0;
 Ka_N0 = ReceiveNoisePower(KaBand.Bandwidth, KaBand.T, KaBand.F);
 Ka_CN = (KaBand.Pt + KaBand.Gt + KaBand.Gr + Ka_LP) - Ka_N0;   
 
-S_CI = 10 * log10(power(10, SBand.CI_int/10) + power(10, SBand.CI_ext/10) );
-K_CI = 10 * log10(power(10, KBand.CI_int/10) + power(10, KBand.CI_ext/10) );
-Ka_CI = 10 * log10(power(10, KaBand.CI_int/10) + power(10, KaBand.CI_ext/10) );
+S_CI =  10 * log10(power(10, -SBand.CI_int/10) + power(10, -SBand.CI_ext/10) );
+K_CI =  10 * log10(power(10, -KBand.CI_int/10) + power(10, -KBand.CI_ext/10) );
+Ka_CI =  10 * log10(power(10, -KaBand.CI_int/10) + power(10, -KaBand.CI_ext/10) );
 
 S_CNI = S_CN - S_CI;
 K_CNI = K_CN - K_CI;
@@ -141,7 +141,7 @@ S_Throughtput_DL = SBand.Bandwidth * log2(1 + dBm_to_mW(S_CNI));
 K_Throughtput_DL = KBand.Bandwidth * log2(1 + dBm_to_mW(K_CNI));
 Ka_Throughtput_DL = KaBand.Bandwidth * log2(1 + dBm_to_mW(Ka_CNI));
 
-[N_k_DL,n_k_DL] = CalculateSatelites_Circunference_Belt(KBand.Gt,el_angle,h,K_CNI,KBand.Bandwidth,A,Houses_covered,max_bandwidth, "DL_K",R);
+[N_k_DL,n_k_DL] = CalculateSatelites_Circunference_Belt(KBand.Gt,el_angle,h,K_CNI,KBand.Bandwidth,K_Throughtput_DL,A,Houses_covered,max_bandwidth, "DL_K",R);
 % [N_ka_DL,n_ka_DL] = CalculateSatelites_Circunference_Belt(KaBand.Gt,el_angle,h,K_CNI,KaBand.Bandwidth,A,Houses_covered,max_bandwidth, "DL_Ka",R);
 
 
